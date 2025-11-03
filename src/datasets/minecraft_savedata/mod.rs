@@ -46,6 +46,7 @@ use crate::{generate_vec, Generate};
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -183,6 +184,7 @@ impl From<rpb::minecraft_savedata::GameType> for GameType {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -369,6 +371,7 @@ impl From<rpb::minecraft_savedata::Item> for Item {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -531,6 +534,7 @@ impl From<rpb::minecraft_savedata::Abilities> for Abilities {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -986,6 +990,7 @@ impl From<rpb::minecraft_savedata::Entity> for Entity {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -1307,6 +1312,7 @@ impl From<rpb::minecraft_savedata::RecipeBook> for RecipeBook {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -2004,6 +2010,7 @@ impl From<rpb::minecraft_savedata::Player> for Player {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -2144,5 +2151,17 @@ impl From<rpb::minecraft_savedata::Players> for Players {
         Players {
             players: value.players.into_iter().map(Into::into).collect(),
         }
+    }
+}
+
+#[cfg(feature = "fory")]
+impl crate::bench_fory::ForyRegister for Players {
+    fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<Item>(20).expect("Failed to register Item");
+        fory.register::<Abilities>(21).expect("Failed to register Abilities");
+        fory.register::<Entity>(22).expect("Failed to register Entity");
+        fory.register::<RecipeBook>(23).expect("Failed to register RecipeBook");
+        fory.register::<Player>(24).expect("Failed to register Player");
+        fory.register::<Players>(25).expect("Failed to register Players");
     }
 }

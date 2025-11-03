@@ -41,6 +41,7 @@ use crate::Generate;
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -224,6 +225,7 @@ impl From<log_protobuf::log::Address> for Address {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -498,6 +500,7 @@ impl From<log_protobuf::log::Log> for Log {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -638,5 +641,14 @@ impl From<log_protobuf::log::Logs> for Logs {
         Logs {
             logs: value.logs.into_iter().map(Into::into).collect(),
         }
+    }
+}
+
+#[cfg(feature = "fory")]
+impl crate::bench_fory::ForyRegister for Logs {
+    fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<Address>(1).expect("Failed to register Address");
+        fory.register::<Log>(2).expect("Failed to register Log");
+        fory.register::<Logs>(3).expect("Failed to register Logs");
     }
 }

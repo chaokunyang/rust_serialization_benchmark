@@ -60,6 +60,8 @@ databuf = { version = "=0.5.0", optional = true }
 dlhn = { version = "=0.1.7", optional = true }
 flatbuffers = { version = "=25.2.10", optional = true }
 flexbuffers = { version = "=25.2.10", optional = true }
+fory = { path = "/Users/chaokunyang/Desktop/dev/fory/rust/fory", optional = true }
+fory-core = { path = "/Users/chaokunyang/Desktop/dev/fory/rust/fory-core", optional = true }
 minicbor = { version = "=1.0.0", optional = true, features = [
     "alloc",
     "derive",
@@ -114,6 +116,7 @@ default-encoding-set = [
     "dlhn",
     "flatbuffers",
     "flexbuffers",
+    "fory",
     "minicbor",
     "msgpacker",
     "nachricht-serde",
@@ -145,6 +148,7 @@ all-protobuf = ["prost", "protobuf"]
 
 measure-compression = []
 capnp = ["dep:capnp"]
+fory = ["dep:fory", "dep:fory-core"]
 prost = ["dep:prost", "dep:capnp"]
 protobuf = ["dep:protobuf"]
 simd-json = ["dep:simd-json", "dep:simd-json-derive"]

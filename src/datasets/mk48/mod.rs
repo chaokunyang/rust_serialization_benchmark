@@ -66,6 +66,7 @@ use crate::{generate_vec, Generate};
 #[cfg_attr(feature = "savefile", derive(savefile_derive::Savefile))]
 #[cfg_attr(feature = "nanoserde", derive(nanoserde::SerBin, nanoserde::DeBin))]
 #[cfg_attr(feature = "wiring", derive(Wiring, Unwiring), tag(u8))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[repr(u8)]
 pub enum EntityType {
     #[cfg_attr(feature = "bilrost", bilrost(0))]
@@ -324,6 +325,7 @@ fn generate_velocity(rng: &mut impl Rng) -> i16 {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -483,6 +485,7 @@ impl From<rpb::mk48::Transform> for Transform {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -605,6 +608,7 @@ impl From<rpb::mk48::Guidance> for Guidance {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -865,6 +869,7 @@ impl From<rpb::mk48::Contact> for Contact {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -1027,6 +1032,7 @@ impl From<rpb::mk48::TerrainUpdate> for TerrainUpdate {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -1201,6 +1207,7 @@ impl From<rpb::mk48::Update> for Update {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -1308,3 +1315,16 @@ impl From<rpb::mk48::Updates> for Updates {
         }
     }
 }
+
+#[cfg(feature = "fory")]
+impl crate::bench_fory::ForyRegister for Updates {
+    fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<Transform>(30).expect("Failed to register Transform");
+        fory.register::<Guidance>(31).expect("Failed to register Guidance");
+        fory.register::<Contact>(32).expect("Failed to register Contact");
+        fory.register::<TerrainUpdate>(33).expect("Failed to register TerrainUpdate");
+        fory.register::<Update>(34).expect("Failed to register Update");
+        fory.register::<Updates>(35).expect("Failed to register Updates");
+    }
+}
+

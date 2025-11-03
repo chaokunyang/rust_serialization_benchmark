@@ -41,6 +41,7 @@ use crate::Generate;
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -163,6 +164,7 @@ impl From<mesh_protobuf::mesh::Vector3> for Vector3 {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -299,6 +301,7 @@ impl From<mesh_protobuf::mesh::Triangle> for Triangle {
     derive(borsh::BorshSerialize, borsh::BorshDeserialize)
 )]
 #[cfg_attr(feature = "databuf", derive(databuf::Encode, databuf::Decode))]
+#[cfg_attr(feature = "fory", derive(fory::ForyObject))]
 #[cfg_attr(feature = "minicbor", derive(minicbor::Encode, minicbor::Decode))]
 #[cfg_attr(feature = "msgpacker", derive(msgpacker::MsgPacker))]
 #[cfg_attr(feature = "nibblecode", derive(nibblecode::Serialize))]
@@ -406,5 +409,14 @@ impl From<mesh_protobuf::mesh::Mesh> for Mesh {
         Mesh {
             triangles: value.triangles.into_iter().map(Into::into).collect(),
         }
+    }
+}
+
+#[cfg(feature = "fory")]
+impl crate::bench_fory::ForyRegister for Mesh {
+    fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<Vector3>(10).expect("Failed to register Vector3");
+        fory.register::<Triangle>(11).expect("Failed to register Triangle");
+        fory.register::<Mesh>(12).expect("Failed to register Mesh");
     }
 }
