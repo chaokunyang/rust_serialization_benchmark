@@ -16,12 +16,15 @@ where
     T::register_fory_types(&mut fory);
 
     group.bench_function("serialize", |b| {
+        let mut buffer = Vec::new();
         b.iter(|| {
-            black_box(fory.serialize(black_box(data)).unwrap());
+            buffer.clear();
+            black_box(fory.serialize_to(black_box(data), &mut buffer).unwrap());
         })
     });
 
-    let encoded = fory.serialize(data).unwrap();
+    let mut encoded = Vec::new();
+    fory.serialize_to(data, &mut encoded).unwrap();
 
     group.bench_function("deserialize", |b| {
         b.iter(|| {

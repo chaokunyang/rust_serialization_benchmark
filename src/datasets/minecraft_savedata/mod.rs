@@ -2157,6 +2157,7 @@ impl From<rpb::minecraft_savedata::Players> for Players {
 #[cfg(feature = "fory")]
 impl crate::bench_fory::ForyRegister for Players {
     fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<GameType>(19).expect("Failed to register GameType");
         fory.register::<Item>(20).expect("Failed to register Item");
         fory.register::<Abilities>(21).expect("Failed to register Abilities");
         fory.register::<Entity>(22).expect("Failed to register Entity");

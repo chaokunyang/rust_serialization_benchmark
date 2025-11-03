@@ -1319,6 +1319,7 @@ impl From<rpb::mk48::Updates> for Updates {
 #[cfg(feature = "fory")]
 impl crate::bench_fory::ForyRegister for Updates {
     fn register_fory_types(fory: &mut fory::Fory) {
+        fory.register::<EntityType>(29).expect("Failed to register EntityType");
         fory.register::<Transform>(30).expect("Failed to register Transform");
         fory.register::<Guidance>(31).expect("Failed to register Guidance");
         fory.register::<Contact>(32).expect("Failed to register Contact");
